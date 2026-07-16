@@ -37,20 +37,13 @@ jobs:
           mkdir "C:\mock-gd"
           "default`nC:\mock-gd`nn`nny" | geode config setup
           "y" | geode sdk install
-
-      - name: Install Geode binaries
-        shell: pwsh
-        run: |
-          $ErrorActionPreference = 'Stop'
           $geodeDir = "$env:USERPROFILE\Documents\Geode"
-          $env:GEODE_SDK = $geodeDir
-          [Environment]::SetEnvironmentVariable("GEODE_SDK", $geodeDir, "User")
+          geode sdk set-path $geodeDir
           geode sdk install-binaries
 
       - name: Configure and build
         shell: pwsh
         run: |
-          $env:GEODE_SDK = "$env:USERPROFILE\Documents\Geode"
           cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
           cmake --build build
 
