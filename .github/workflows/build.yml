@@ -12,10 +12,10 @@ jobs:
       - name: Check out project
         uses: actions/checkout@v4
 
-      - name: Install Ninja
+      - name: Install CMake and Ninja
         shell: pwsh
         run: |
-          choco install ninja -y
+          choco install cmake ninja -y
 
       - name: Download Geode CLI
         shell: pwsh
