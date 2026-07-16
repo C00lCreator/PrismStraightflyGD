@@ -10,7 +10,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Check out project
-        uses: actions/checkout@v4.1.7
+        uses: actions/checkout@v4
 
       - name: Install Ninja
         shell: pwsh
@@ -34,8 +34,17 @@ jobs:
         shell: pwsh
         run: |
           $ErrorActionPreference = 'Stop'
+          $geodeDir = "$env:USERPROFILE\.geode"
+          New-Item -ItemType Directory -Path $geodeDir -Force | Out-Null
+          $configJson = @{
+            profiles = @{
+              default = @{
+                gd = "C:\mock-gd"
+              }
+            }
+          } | ConvertTo-Json
+          Set-Content -Path "$geodeDir\config.json" -Value $configJson
           mkdir "C:\mock-gd"
-          geode config new default "C:\mock-gd" --dont-setup
           geode sdk install
           geode sdk install-binaries
 
