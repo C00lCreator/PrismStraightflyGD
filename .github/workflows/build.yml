@@ -5,9 +5,6 @@ on:
   push:
     branches: [main, master]
 
-env:
-  GEODE_SDK: C:\geode-sdk
-
 jobs:
   build:
     runs-on: windows-latest
@@ -39,7 +36,7 @@ jobs:
           $ErrorActionPreference = 'Stop'
           mkdir "C:\mock-gd"
           "default`nC:\mock-gd`nn`nny" | geode config setup
-          "y" | geode sdk install --path C:\geode-sdk
+          "y" | geode sdk install C:\geode-sdk
           geode sdk install-binaries
 
       - name: Configure and build
