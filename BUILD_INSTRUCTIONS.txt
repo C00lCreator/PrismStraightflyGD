@@ -1,0 +1,14 @@
+HOW TO GET THE REAL .GEODE FILE
+
+1. Create a new empty GitHub repository.
+2. Upload every file and folder from this package, including the hidden .github folder.
+3. Open the repository's Actions tab.
+4. Select "Build Prism Straight Fly Helper".
+5. Click "Run workflow".
+6. When it finishes, open the run and download the artifact named:
+   Prism-Straight-Fly-Helper
+7. Extract the downloaded artifact ZIP. It contains:
+   Prism-Straight-Fly-Helper.geode
+
+This method compiles the required Windows DLL on GitHub's Windows builder.
+Renaming this source ZIP to .geode will not work.
