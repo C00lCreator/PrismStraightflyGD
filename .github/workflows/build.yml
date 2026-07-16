@@ -28,6 +28,24 @@ jobs:
           if (-not $exe) { throw 'geode.exe was not found.' }
           $exe.DirectoryName | Out-File $env:GITHUB_PATH -Append
 
+      - name: Setup Geode Config
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $geodeDir = "$env:USERPROFILE\.geode"
+          if (!(Test-Path $geodeDir)) {
+            New-Item -ItemType Directory -Path $geodeDir -Force | Out-Null
+          }
+          $configPath = Join-Path $geodeDir "config.json"
+          $config = @{
+            profiles = @{
+              default = @{
+                gd = "C:\Program Files (x86)\Steam\steamapps\common\Geometry Dash"
+              }
+            }
+          } | ConvertTo-Json
+          Set-Content -Path $configPath -Value $config
+
       - name: Install Geode SDK
         shell: pwsh
         run: |
