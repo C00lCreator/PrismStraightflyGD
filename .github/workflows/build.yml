@@ -1,0 +1,56 @@
+name: Build Prism Straight Fly Helper
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, master]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Check out project
+        uses: actions/checkout@v4
+
+      - name: Install Ninja
+        uses: seanmiddleditch/gha-setup-ninja@v5
+
+      - name: Download Geode CLI
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $release = Invoke-RestMethod 'https://api.github.com/repos/geode-sdk/cli/releases/latest'
+          $asset = $release.assets | Where-Object { $_.name -match '(?i)windows.*\.zip$|win.*\.zip$' } | Select-Object -First 1
+          if (-not $asset) { throw 'No Windows Geode CLI ZIP was found.' }
+          Invoke-WebRequest $asset.browser_download_url -OutFile "$env:RUNNER_TEMP\geode-cli.zip"
+          Expand-Archive "$env:RUNNER_TEMP\geode-cli.zip" "$env:RUNNER_TEMP\geode-cli" -Force
+          $exe = Get-ChildItem "$env:RUNNER_TEMP\geode-cli" -Recurse -Filter geode.exe | Select-Object -First 1
+          if (-not $exe) { throw 'geode.exe was not found.' }
+          $exe.DirectoryName | Out-File $env:GITHUB_PATH -Append
+
+      - name: Install Geode SDK
+        shell: pwsh
+        run: |
+          geode sdk install
+          geode sdk install-binaries
+
+      - name: Configure and build
+        shell: pwsh
+        run: |
+          cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+          cmake --build build
+
+      - name: Collect package
+        shell: pwsh
+        run: |
+          $file = Get-ChildItem build -Recurse -Filter *.geode | Select-Object -First 1
+          if (-not $file) { throw 'Build completed without a .geode file.' }
+          New-Item artifact -ItemType Directory -Force | Out-Null
+          Copy-Item $file.FullName artifact\Prism-Straight-Fly-Helper.geode
+
+      - name: Upload finished mod
+        uses: actions/upload-artifact@v4
+        with:
+          name: Prism-Straight-Fly-Helper
+          path: artifact/Prism-Straight-Fly-Helper.geode
+          if-no-files-found: error
