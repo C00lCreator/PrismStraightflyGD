@@ -35,8 +35,8 @@ jobs:
         run: |
           $ErrorActionPreference = 'Stop'
           mkdir "C:\mock-gd"
-          "default`nC:\mock-gd`nn`nn" | geode config setup
-          geode sdk install
+          "default`nC:\mock-gd`nn`nny" | geode config setup
+          "y" | geode sdk install
           geode sdk install-binaries
 
       - name: Configure and build
