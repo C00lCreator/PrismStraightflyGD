@@ -28,30 +28,12 @@ jobs:
           if (-not $exe) { throw 'geode.exe was not found.' }
           $exe.DirectoryName | Out-File $env:GITHUB_PATH -Append
 
-      - name: Setup Geode Config
+      - name: Setup Geode with config
         shell: pwsh
         run: |
           $ErrorActionPreference = 'Stop'
-          $geodeDir = "$env:USERPROFILE\.geode"
-          New-Item -ItemType Directory -Path $geodeDir -Force | Out-Null
-          
-          # Create a mock GD directory (Geode just needs the path to exist)
-          $gdDir = "C:\mock-gd"
-          New-Item -ItemType Directory -Path $gdDir -Force | Out-Null
-          
-          $configPath = Join-Path $geodeDir "config.json"
-          $config = @{
-            profiles = @{
-              default = @{
-                gd = $gdDir
-              }
-            }
-          } | ConvertTo-Json
-          Set-Content -Path $configPath -Value $config
-
-      - name: Install Geode SDK
-        shell: pwsh
-        run: |
+          mkdir "C:\mock-gd"
+          geode config new default "C:\mock-gd" --dont-setup
           geode sdk install
           geode sdk install-binaries
 
