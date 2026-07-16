@@ -1,0 +1,79 @@
+{
+  "geode": "5.4.1",
+  "version": "v1.0.0",
+  "gd": {
+    "win": "2.2081"
+  },
+  "id": "nick.prism-straight-fly-helper",
+  "name": "Prism Straight Fly Helper",
+  "developer": "Nick + OpenAI",
+  "description": "Practice-only straight-fly assistance designed to run alongside Prism Menu.",
+  "tags": [
+    "gameplay",
+    "practice",
+    "utility"
+  ],
+  "dependencies": {
+    "firee.prism": ">=1.10.9"
+  },
+  "settings": {
+    "enabled": {
+      "name": "Enable Straight Fly Helper",
+      "description": "Allows automatic detection and assistance while using ship mode in Practice Mode.",
+      "type": "bool",
+      "default": true
+    },
+    "auto-detect": {
+      "name": "Auto Detect",
+      "description": "Detects repeated ship taps with low vertical movement and activates assistance.",
+      "type": "bool",
+      "default": true
+    },
+    "deadzone": {
+      "name": "Vertical Deadzone",
+      "description": "How far the ship may move away from the target line before assistance reacts.",
+      "type": "float",
+      "default": 2.8,
+      "min": 0.5,
+      "max": 10.0
+    },
+    "velocity-strength": {
+      "name": "Velocity Correction",
+      "description": "How strongly vertical velocity affects automatic hold/release decisions.",
+      "type": "float",
+      "default": 0.18,
+      "min": 0.0,
+      "max": 0.6
+    },
+    "detection-taps": {
+      "name": "Detection Taps",
+      "description": "Number of quick alternating presses/releases needed before assistance activates.",
+      "type": "int",
+      "default": 5,
+      "min": 3,
+      "max": 12
+    },
+    "detection-window": {
+      "name": "Detection Window",
+      "description": "Maximum seconds allowed for the required taps.",
+      "type": "float",
+      "default": 1.25,
+      "min": 0.4,
+      "max": 3.0
+    },
+    "max-assist-seconds": {
+      "name": "Maximum Assist Time",
+      "description": "Stops assistance after this many seconds unless straight-fly input continues.",
+      "type": "float",
+      "default": 8.0,
+      "min": 1.0,
+      "max": 30.0
+    },
+    "show-status": {
+      "name": "Show Status Label",
+      "description": "Displays PRACTICE STRAIGHT FLY ASSIST while active.",
+      "type": "bool",
+      "default": true
+    }
+  }
+}
