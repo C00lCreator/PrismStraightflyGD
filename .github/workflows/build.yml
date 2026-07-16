@@ -33,14 +33,17 @@ jobs:
         run: |
           $ErrorActionPreference = 'Stop'
           $geodeDir = "$env:USERPROFILE\.geode"
-          if (!(Test-Path $geodeDir)) {
-            New-Item -ItemType Directory -Path $geodeDir -Force | Out-Null
-          }
+          New-Item -ItemType Directory -Path $geodeDir -Force | Out-Null
+          
+          # Create a mock GD directory (Geode just needs the path to exist)
+          $gdDir = "C:\mock-gd"
+          New-Item -ItemType Directory -Path $gdDir -Force | Out-Null
+          
           $configPath = Join-Path $geodeDir "config.json"
           $config = @{
             profiles = @{
               default = @{
-                gd = "C:\Program Files (x86)\Steam\steamapps\common\Geometry Dash"
+                gd = $gdDir
               }
             }
           } | ConvertTo-Json
