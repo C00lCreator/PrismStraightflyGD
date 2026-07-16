@@ -10,10 +10,10 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Check out project
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.1.7
 
       - name: Install Ninja
-        uses: seanmiddleditch/gha-setup-ninja@v6
+        uses: ninja-build/setup-ninja@v1
 
       - name: Download Geode CLI
         shell: pwsh
